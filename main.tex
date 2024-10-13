@@ -1,0 +1,252 @@
+% To send to: askunibomath@gmail.com
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath} % Load amsmath before mathtools
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{stackrel}
+\usepackage{mathrsfs}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{emptypage}
+\usepackage{faktor}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumitem}
+\usepackage{appendix}
+\usepackage[babel]{csquotes}
+\usepackage{sectsty}
+\usepackage{accents}
+\usepackage{biblatex} % Uncomment if you need to use biblatex
+\linespread{1}
+
+\addbibresource{bibliography.bib}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\K}{\mathbb{K}}
+\newcommand{\Z}{\mathbb{Z}} 
+\newcommand{\Q}{\mathbb{Q}} 
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}} 
+\newcommand{\LL}{\mathbb{L}}
+\newcommand{\HH}{\mathbb{H}}
+\newcommand{\W}{\mathbb{W}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\prob}{\mathbb{P}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\T}{\mathbb{T}}
+
+\let\div\undefined\DeclareMathOperator{\div}{div}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\supp}{supp}
+
+\newtheoremstyle{mystyle}% name
+  {0.5cm}% Space above
+  {\topsep}% Space below
+  {\itshape}% Body font
+  {}% Indent amount
+  {\bfseries}% Theorem head font
+  {:}% Punctuation after theorem head
+  {3mm}% Space after theorem head
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% Theorem head spec
+
+\newtheoremstyle{mystyleNormalFont}% name
+  {0.5cm}% Space above
+  {0.5cm}% Space below
+  {\normalfont}% Body font
+  {}% Indent amount
+  {\bfseries}% Theorem head font
+  {:}% Punctuation after theorem head
+  {3mm}% Space after theorem head
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}% Theorem head spec
+
+\theoremstyle{mystyle}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+
+\theoremstyle{mystyleNormalFont}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{definition}[theorem]{Definition}
+
+\theoremstyle{plain}
+\newtheorem{assumption}{Assumption}
+\renewcommand{\theassumption}{\Alph{assumption}}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\let\div\undefined\DeclareMathOperator{\div}{div}
+\DeclareMathOperator{\imm}{Im}
+\DeclareMathOperator{\re}{Re}
+\let\arg\undefined\DeclareMathOperator{\arg}{Arg}
+
+\title{A mini course on PDE - by Prof. Michele Coti Zelati}
+\author{Filippo Giovagnini\footnote{Department of Mathematics, Imperial College London}}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+This document is a summary of the mini course on Partial Differential Equations (PDE) given by Prof. Michele Coti Zelati at Imperial College London in the academic year 2024. The course is divided into three parts: the first part is an introduction to the theory of distributions, the second part is an introduction to the theory of Sobolev spaces and the third part is an introduction to the theory of elliptic PDE. The course is aimed at students who have already taken a course in PDE at the undergraduate level. The course is based on the book \textit{Partial Differential Equations} by L.C. Evans.
+
+\section{Lagrangian Principle}
+
+Let us condider the following problem:
+\begin{equation}
+    \label{eq:continuity}
+    \begin{cases}
+        \partial_t \rho + \div(\rho u) = 0, & \text{in } \R^d \times (0, T), \\
+        \rho(0, x) = \rho_0(x), & \text{in } \R^d.
+    \end{cases}
+\end{equation}
+This is called the continuity equation.
+
+\begin{remark}
+    Consider the one-dimensional problem:
+    \begin{equation}
+        \partial_t \rho + a \cdot \partial_x \rho = 0.
+    \end{equation}
+Then one has that:
+\[
+(1, a) \cdot \nabla_{t, x} \rho = 0,
+\]
+that implies that $\rho$ is constant along $x = a t + x_0$. Therefore:
+\[
+\frac{d}{dt} \rho(t, at + x_0) = a \cdot \partial_x \rho(at + x_0) + \partial_t \rho(t, at + x_0) = 0,\]
+from which we get $\rho(t, at + x_0) = \rho_0(x_0)$. We can conclude that $\rho(t, x) = \rho_0(x - at)$.
+\end{remark}
+
+Let us denote with $X(t,a)$ the position of a particle at time $t$ that was at position $a$ at time $0$ and that moves in the velocity field $u$. Under the proper assumptions on the regularity of $u$, one can prove the existence of $A(t, x)$ such that:
+\[
+\begin{cases}
+A(t, X(t, a)) = x, \\
+X(t, A(t, x)) = a.
+\end{cases}\]
+
+The motion of the particle is described by the following ODE:
+\begin{equation}
+    \label{eq:lagrangian}
+\begin{cases}
+\frac{d}{dt} X(t, a) = u(t, X(t, a)), \\
+X(0, a) = a.
+\end{cases}
+\end{equation}
+
+By the Cauchy-Lipschitz theorem, if $u \in C_{t, x}$ and $u$ is Lipschitz in $x$ uniformly in $t$, we have that the solution exists and is unique. The map $A$ is called the Lagrangian map.
+
+\begin{definition}
+    Given a vector field $u: \R^d \to \R^d$, and denoting $X(t, a)$ the associated solution to \eqref{eq:lagrangian}, we define the convective derivative of a function $f(t, x)$ as:
+    \[
+    (D_t f)(t, X(t, a)) := \frac{d}{dt} f(t, X(t, a)).\]
+\end{definition}
+
+\begin{remark}
+    If $\rho$ satisfies the continuity equation \eqref{eq:continuity}, then:
+    \[
+    D_t \rho = - (\nabla \cdot u) \cdot \rho \]
+\end{remark}
+
+\begin{lemma}
+    Defining $J(t, a) := \det (X(t, a))$ one has:
+    \[
+    \partial_t J(t, a) = J(t, a) \left( \nabla \cdot u (t, X(t, a)) \right)\]
+\end{lemma}
+
+Now, if $V(t) := X(t, a)(V)$:
+
+\begin{equation}
+    \label{eq:volume_variations}
+    \begin{aligned}
+        \frac{d}{dt} \int_{V(t)} f(t, x) dx &= \frac{d}{dt} \int_{V} f(t, X(t, a)) J(t, a) da \\
+        &= \int_{V} (D_t f)(t, X(t, a)) J(t, a) da + \int_{\R^d} f(t, X(t, a)) \partial_t J(t, a) da \\
+        &= \int_{V} (\partial_t f + u \cdot \nabla f)(t, X(t, a)) J(t, a) da + \int_{\R^d} f(t, X(t, a)) J(t, a) \nabla \cdot u(t, X(t, a)) da \\
+        &= \int_{V} \partial_t f(t, X(t, a)) J(t, a) da + \int_{\R^d} f(t, X(t, a)) \nabla \cdot (\rho u)(t, X(t, a)) J(t, a)da \\
+        &= \int_{V} \left( \partial_t f + \nabla \cdot (\rho u) \right)(t, X(t, a)) f(X(t, a)) J(t, a) da \\
+        &= \int_{V(t)} \left( \partial_t f + \nabla \cdot (\rho u) \right)(t, x) dx.
+    \end{aligned}
+\end{equation}
+
+\begin{remark}
+    If $\rho$ satisfies the continuity equation \eqref{eq:continuity}, then:
+    \[
+        \frac{d}{dt} \int_{V(t)} f(t, x) dx = 0
+    \]
+\end{remark}
+
+\subsection{Incompressibility}
+
+We define the fluid to be incompressible if and only if $X(t, a)$ preserves volumes. We can show that this is equivalent to the condition $\nabla \cdot u = 0$.
+
+If we choose $f=1$ in the formula \eqref{eq:volume_variations}:
+\begin{equation}
+    \label{eq:incompressibility}
+    \begin{aligned}
+        0 &= \frac{d}{dt} \int_{V(t)} 1 dx \\
+        &= \int_{V(t)} \nabla \cdot u(t, x) dx \\
+        &= \int_{V} \nabla \cdot u(t, X(t, a)) J(t, a) da \\
+        &= \int_{V} \nabla \cdot u(t, X(t, a)) da.
+    \end{aligned}
+\end{equation}
+
+from which we easily get the equivalence.
+
+
+\section{Method of Characteristics}
+
+Let us consider:
+\begin{equation}
+    \label{eq:char_1_dimension}
+    \partial_t u + b(t, x, \rho) \cdot \partial_x \rho = c(t, x, \rho),
+\end{equation}
+
+Now consider the following system of ODEs:
+\begin{equation}
+    \begin{cases}
+        \frac{d}{dt} X(t, a) = b(t, X(t, a), Z(t, a)), \\
+        \frac{d}{dt} Z(t, a) = c(t, X(t, a), Z(t, a)), \\
+        X(0, a) = a, \\
+        Z(0, a) = \rho_0(a).
+    \end{cases}
+\end{equation}
+
+Now if we define $\rho$ on $(t, X(t, a))$:
+\begin{equation}
+    c(t, X(t, a), Z(t, a)) = \frac{d}{dt} Z(t, a) = \frac{d}{dt}\rho(t, X(t, a)) = \partial_t \rho(t, X(t, a)) + b(t, X(t, a), Z(t, a)) \cdot \nabla \rho(t, X(t, a)).
+\end{equation}
+Finally I can recover $\rho$ on $(t, x)$ because $\det (X(t, a)) = 1$ near $t = 0$, so that I can invert $X(t, a)$.
+
+We have proven the following theorem:
+\begin{theorem}
+    If $b, c \in C^1$ in a neighbourhood of $(t, x_0, \rho_0(0))$, then near $(0, x_0)$ there exists a unique solution $\rho$ to \eqref{eq:char_1_dimension}.
+\end{theorem}
+
+\begin{remark}
+    If $c$ and $b$ do not depend on $\rho$, then:
+    \[
+    \rho(t, x) = g(A(t, x)) + \int_0^t c(s, x(s)) ds\]
+    If furthermore $b$ is constant, then:
+    \begin{equation}
+        \rho(t, x) = g(x - b t) + \int_0^t c(s, x + b(s - t)) ds.
+\end{remark}
+
+
+\printbibliography
+
+\end{document}
